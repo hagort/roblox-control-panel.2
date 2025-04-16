@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox Control Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .btn {
+            background-color: #444;
+            border: none;
+            padding: 10px;
+            margin: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background-color: #666;
+        }
+        #status {
+            margin-top: 20px;
+            color: green;
+        }
+        #commandPanel {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Roblox Control Panel</h1>
+    <div id="status"></div>
+    <div id="commandPanel">
+        <h2>Commands</h2>
+        <button class="btn" onclick="sendCommand('kick')">Kick Player</button>
+        <button class="btn" onclick="sendCommand('ban')">Ban Player</button>
+        <button class="btn" onclick="sendCommand('teleport')">Teleport Player</button>
+        <button class="btn" onclick="sendCommand('inject')">Inject Script</button>
+    </div>
+
+    <script>
+        // Fetching the parameters from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('userId');
+        const username = urlParams.get('username');
+
+        // User authentication
+        const validUserId = "YourRobloxUserId";  // Replace with your Roblox User ID
+        const validUsername = "YourUsername";   // Replace with your Roblox Username
+
+        const statusDiv = document.getElementById('status');
+        const commandPanel = document.getElementById('commandPanel');
+
+        if (userId === validUserId && username === validUsername) {
+            statusDiv.textContent = "Login successful!";
+            commandPanel.style.display = "block";
+        } else {
+            statusDiv.textContent = "Invalid User ID or Username!";
+            statusDiv.style.color = "red";
+        }
+
+        function sendCommand(command) {
+            fetch(`https://yourgameurl.com/command`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ command })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(`Command "${command}" sent successfully!`);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
